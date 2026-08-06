@@ -1,4 +1,4 @@
-package com.example.shakeeat
+package data
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -16,10 +16,10 @@ interface DishDao {
     fun getDishesByMood(mood: String): Flow<List<Dish>>
 
     @Insert
-    suspend fun insertAll(dishes: Dish)
+    suspend fun insert(dish: Dish)
 
     @Delete
-    suspend fun delete(dishes: Dish)
+    suspend fun delete(dish: Dish)
 
     @Update
     suspend fun update(dish: Dish)
