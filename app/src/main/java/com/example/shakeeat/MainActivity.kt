@@ -25,25 +25,29 @@ class MainActivity : ComponentActivity() {
         val factory = DishViewModelFactory(AppDatabase.getInstance(applicationContext).dishDao())
         val viewModel = ViewModelProvider(this, factory)[DishViewModel::class.java]
         setContent {
-            MoodSelectionLayout(
-                moods = viewModel.moods,
-                onMoodConfirmed = { selectedMoods -> }
-            )
-            val navController = rememberNavController()
-            NavHost(navController = navController, startDestination = "mood"){
-                composable("mood") {
-                    MoodSelectionLayout(
-                        moods = viewModel.moods,
-                        onMoodConfirmed = { selectedMoods ->
-                            navController.navigate("shake")
-                        }
-                    )
+            ShakeEatTheme {
+                val navController = rememberNavController()
+                NavHost(navController = navController, startDestination = "mood") {
+                    composable("mood") {
+                        MoodSelectionLayout(
+                            moods = viewModel.moods,
+                            onMoodConfirmed = { selectedMoods ->
+                                navController.currentBackStackEntry
+                                    ?.savedStateHandle
+                                    ?.set("selectedMoods", selectedMoods.toList())
+                                navController.navigate("shake")
+                            }
+                        )
+                    }
+                    composable("shake") {
+                        val selectedMoods = navController.previousBackStackEntry
+                            ?.savedStateHandle
+                            ?.get<List<String>>("selectedMoods")
+                            ?: emptyList()
+                        Text("Selected: ${'$'}{selectedMoods.joinToString()}")
+                        // TODO request filtered dishes from viewModel and render results
+                    }
                 }
-
-                composable("shake"){
-
-                }
-
             }
         }
     }

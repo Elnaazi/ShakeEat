@@ -1,6 +1,6 @@
 package ui.components
 
-import androidx.compose.foundation.R
+import com.example.shakeeat.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.statusBarsPadding

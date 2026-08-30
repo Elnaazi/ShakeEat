@@ -2,5 +2,5 @@
     <string name = "app_name">ShakeEat</string>
     <string name = "mood_question">What\'s the mood tonight?</string>
     <string name = "mood_confirmation">Confirm</string>
-    <string name = "shake_screen">Shake your phone</string>
+    <string name= "shake_screen">Shake your phone</string>
 </resources>
