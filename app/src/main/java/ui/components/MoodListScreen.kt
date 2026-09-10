@@ -38,6 +38,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.shakeeat.R
 import com.example.shakeeat.ui.theme.background_beige
 import com.example.shakeeat.ui.theme.button_beige
@@ -48,7 +50,7 @@ import com.example.shakeeat.ui.theme.white_card
 
 
 @Composable
-fun MoodSelectionLayout(modifier : Modifier = Modifier, moods: List<String>,onMoodConfirmed: (Set<String>) -> Unit) {
+fun MoodSelectionLayout(navController: NavController, modifier : Modifier = Modifier, moods: List<String>, onMoodConfirmed: (Set<String>) -> Unit) {
     var selectedMoods by rememberSaveable {mutableStateOf(setOf<String>())}
     Column (
         modifier = Modifier
@@ -111,7 +113,7 @@ fun MoodSelectionLayout(modifier : Modifier = Modifier, moods: List<String>,onMo
         }
 
         Button(
-            onClick = {onMoodConfirmed(selectedMoods)},
+            onClick = {onMoodConfirmed(selectedMoods); navController.navigate("shake")},
             modifier = Modifier
                 .padding(vertical = 80.dp)
                 .shadow(
@@ -136,7 +138,9 @@ fun MoodSelectionLayout(modifier : Modifier = Modifier, moods: List<String>,onMo
     showSystemUi = true)
 @Composable
 fun MoodListScreenPreview(){
+    val NavController = rememberNavController()
     MoodSelectionLayout(
+        navController = NavController,
         moods = listOf("lazy", "spicy", "savory", "comfort food"),
         onMoodConfirmed = {}
     )
