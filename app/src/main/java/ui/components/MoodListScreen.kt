@@ -115,7 +115,7 @@ fun MoodSelectionLayout(navController: NavController, modifier : Modifier = Modi
         Button(
             onClick = {onMoodConfirmed(selectedMoods); navController.navigate("shake")},
             modifier = Modifier
-                .padding(vertical = 80.dp)
+                .padding(vertical = 50.dp)
                 .shadow(
                     13.dp,
                     shape = RoundedCornerShape(70),

@@ -16,7 +16,9 @@ import data.AppDatabase
 import com.example.shakeeat.ui.theme.ShakeEatTheme
 import ui.components.DishViewModel
 import ui.components.DishViewModelFactory
+import ui.components.FoodSuggestionScreenLayout
 import ui.components.MoodSelectionLayout
+import ui.components.ShakeScreenLayout
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +32,7 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController = navController, startDestination = "mood") {
                     composable("mood") {
                         MoodSelectionLayout(
+                            navController = navController,
                             moods = viewModel.moods,
                             onMoodConfirmed = { selectedMoods ->
                                 navController.currentBackStackEntry
@@ -40,12 +43,19 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable("shake") {
+                        ShakeScreenLayout(navController = navController)
                         val selectedMoods = navController.previousBackStackEntry
                             ?.savedStateHandle
                             ?.get<List<String>>("selectedMoods")
                             ?: emptyList()
-                        Text("Selected: ${'$'}{selectedMoods.joinToString()}")
                         // TODO request filtered dishes from viewModel and render results
+                    }
+
+                    composable("food_suggestion") {
+                        FoodSuggestionScreenLayout(
+                            navController = navController)
+
+                        // TODO implement results screen
                     }
                 }
             }
