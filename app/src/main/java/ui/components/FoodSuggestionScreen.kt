@@ -13,15 +13,18 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.example.shakeeat.ui.theme.background_beige
 import com.example.shakeeat.ui.theme.button_beige
 import com.example.shakeeat.ui.theme.shadow
@@ -29,7 +32,11 @@ import data.Dish
 
 
 @Composable
-fun FoodSuggestionScreenLayout(navController: NavController, modifier: Modifier = Modifier, selectedDish : Dish?) {
+fun FoodSuggestionScreenLayout(
+    navController: NavController,
+    modifier: Modifier = Modifier,
+    selectedDish : Dish?
+){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -37,10 +44,6 @@ fun FoodSuggestionScreenLayout(navController: NavController, modifier: Modifier 
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom
     ){
-        Image(
-            painter = painterResource(),
-            contentDescription = "Food suggestion image",
-        )
         Button(
             onClick = { navController.navigate("recipe")},
             modifier = Modifier
@@ -80,6 +83,22 @@ fun FoodSuggestionScreenLayout(navController: NavController, modifier: Modifier 
         Spacer(modifier = Modifier.height(70.dp))
     }
 }
+
+@Composable
+fun DishImage(
+    dish: Dish,
+    modifier: Modifier = Modifier
+){
+    if(!dish.imagePath.isNullOrEmpty()){
+        AsyncImage(
+            model = dish.imagePath,
+            contentDescription = dish.dishName,
+            modifier = modifier
+        )
+    }
+}
+
+
 
 @Preview(showBackground = true,
     showSystemUi = true)

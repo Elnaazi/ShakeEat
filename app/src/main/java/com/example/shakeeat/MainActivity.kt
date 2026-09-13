@@ -44,11 +44,16 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable("shake") {
-                        ShakeScreenLayout(navController = navController)
                         val selectedMoods = navController.previousBackStackEntry
                             ?.savedStateHandle
                             ?.get<List<String>>("selectedMoods")
                             ?: emptyList()
+
+                        ShakeScreenLayout(
+                            navController = navController,
+                            selectedMoods = selectedMoods,
+                            viewModel = viewModel
+                        )
                     }
 
                     composable("food_suggestion") {

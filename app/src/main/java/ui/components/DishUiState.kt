@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 data class DishUiState(
     val dishes: List<Dish> = emptyList(),
     val selectedMood: String = ""
+
 )
 class DishViewModel(private val dao: DishDao) : ViewModel(){
     // holds the current state of the UI
@@ -47,7 +48,14 @@ class DishViewModel(private val dao: DishDao) : ViewModel(){
             dao.update(dish)
         }
     }
-
+    fun getRandomDishByMoods(selectedMoods: List<String>): Dish? {
+        val dishes = _uiState.value.dishes
+        val filtered = dishes.filter{it.mood in selectedMoods}
+        return if (filtered.isNotEmpty()) {
+            filtered.random()
+        } else {
+            null
+    }
 }
 
 class DishViewModelFactory(private val dao: DishDao) : ViewModelProvider.Factory {

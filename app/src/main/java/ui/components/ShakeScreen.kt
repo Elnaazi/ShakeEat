@@ -32,14 +32,19 @@ import com.example.shakeeat.ui.theme.background_beige
 import kotlin.math.sqrt
 
 @Composable
-fun ShakeScreenLayout(navController: NavController, modifier : Modifier = Modifier) {
+fun ShakeScreenLayout(
+    navController: NavController,
+    modifier : Modifier = Modifier,
+    selectedMoods: List<String>,
+    viewModel: DishViewModel
+) {
     val context = LocalContext.current
     val sensorManager = remember {
         context.getSystemService(SensorManager::class.java)
     }
     val shakeDetector = remember {
         ShakeDetector {
-            navController.navigate("food_suggestion")
+            val randomDish = viewModel.getRandomDishByMoods(selectedMoods)
         }
     }
 
