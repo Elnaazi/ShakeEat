@@ -19,6 +19,7 @@ import ui.components.DishViewModelFactory
 import ui.components.FoodSuggestionScreenLayout
 import ui.components.MoodSelectionLayout
 import ui.components.ShakeScreenLayout
+import androidx.compose.runtime.collectAsState
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,14 +49,11 @@ class MainActivity : ComponentActivity() {
                             ?.savedStateHandle
                             ?.get<List<String>>("selectedMoods")
                             ?: emptyList()
-                        // TODO request filtered dishes from viewModel and render results
                     }
 
                     composable("food_suggestion") {
-                        FoodSuggestionScreenLayout(
-                            navController = navController)
+                        FoodSuggestionScreenLayout(navController = navController, )
 
-                        // TODO implement results screen
                     }
                 }
             }

@@ -57,8 +57,7 @@ fun MoodSelectionLayout(navController: NavController, modifier : Modifier = Modi
             .statusBarsPadding()
             .verticalScroll(state = rememberScrollState())
             .background(background_beige),
-            horizontalAlignment = Alignment.CenterHorizontally,
-
+            horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text (
             text = stringResource(R.string.mood_question),
@@ -127,7 +126,7 @@ fun MoodSelectionLayout(navController: NavController, modifier : Modifier = Modi
         ){
             Text(
                 text = "Let's eat!",
-                fontSize = 20.sp,
+                fontSize = 20.sp
                 )
         }
     }
