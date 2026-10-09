@@ -50,16 +50,22 @@ import com.example.shakeeat.ui.theme.white_card
 
 
 @Composable
-fun MoodSelectionLayout(navController: NavController, modifier : Modifier = Modifier, moods: List<String>, onMoodConfirmed: (Set<String>) -> Unit) {
-    var selectedMoods by rememberSaveable {mutableStateOf(setOf<String>())}
-    Column (
-        modifier = Modifier
+fun MoodSelectionLayout(
+    navController: NavController,
+    modifier: Modifier = Modifier,
+    moods: List<String>,
+    onMoodConfirmed: (Set<String>) -> Unit
+) {
+    var selectedMoods by rememberSaveable { mutableStateOf(setOf<String>()) }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
             .statusBarsPadding()
-            .verticalScroll(state = rememberScrollState())
             .background(background_beige),
-            horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text (
+        Text(
             text = stringResource(R.string.mood_question),
             fontSize = 22.sp,
             textAlign = TextAlign.Center,
@@ -67,67 +73,64 @@ fun MoodSelectionLayout(navController: NavController, modifier : Modifier = Modi
             color = text_brown,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 80.dp)
-
+                .padding(top = 24.dp, bottom = 18.dp)
         )
 
-        moods. forEach {mood ->
-            Card(
-                onClick = {
-                    selectedMoods = if (selectedMoods.contains(mood))
-                        selectedMoods - mood
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .verticalScroll(state = rememberScrollState())
+                .padding(bottom = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            moods.forEach { mood ->
+                Card(
+                    onClick = {
+                        selectedMoods = if (selectedMoods.contains(mood))
+                            selectedMoods - mood
+                        else
+                            selectedMoods + mood
+                    },
+                    colors = if (selectedMoods.contains(mood))
+                        CardDefaults.cardColors(containerColor = selected_card)
                     else
-                        selectedMoods + mood
-                },
-
-                colors = if(selectedMoods.contains(mood))
-                    CardDefaults.cardColors(
-                        containerColor = selected_card
-                    )
-                    else
-
-                    CardDefaults.cardColors(
-                    containerColor = white_card
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(90.dp)
-                    .padding(horizontal = 30.dp, vertical = 12.dp)
-                    .shadow(
-                    12.dp,
-                    shape = RoundedCornerShape(16.dp),
-                    ambientColor = shadow
-
-                )
-            ){
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize()
+                        CardDefaults.cardColors(containerColor = white_card),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(90.dp)
+                        .padding(horizontal = 30.dp, vertical = 12.dp)
+                        .shadow(
+                            12.dp,
+                            shape = RoundedCornerShape(16.dp),
+                            ambientColor = shadow
+                        )
                 ) {
-                    Text(text = mood,
-                        fontSize = 18.sp
-                    )
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Text(text = mood, fontSize = 18.sp)
+                    }
                 }
             }
         }
 
         Button(
-            onClick = {onMoodConfirmed(selectedMoods); navController.navigate("shake")},
+            onClick = { onMoodConfirmed(selectedMoods) },
             modifier = Modifier
-                .padding(vertical = 50.dp)
+                .padding(bottom = 24.dp, top = 8.dp)
                 .shadow(
                     13.dp,
                     shape = RoundedCornerShape(70),
                     ambientColor = shadow,
-                    ),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = button_beige
-            )
-        ){
+                ),
+            colors = ButtonDefaults.buttonColors(containerColor = button_beige)
+        ) {
             Text(
                 text = "Let's eat!",
                 fontSize = 20.sp
-                )
+            )
         }
     }
 }

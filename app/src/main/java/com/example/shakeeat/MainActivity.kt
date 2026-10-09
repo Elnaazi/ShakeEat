@@ -4,29 +4,35 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import data.AppDatabase
 import com.example.shakeeat.ui.theme.ShakeEatTheme
+import data.AppDatabase
+import data.Dish
 import ui.components.DishViewModel
-import ui.components.DishViewModelFactory
 import ui.components.FoodSuggestionScreenLayout
 import ui.components.MoodSelectionLayout
+import ui.components.RecipeScreenLayout
 import ui.components.ShakeScreenLayout
-import androidx.compose.runtime.collectAsState
 
 class MainActivity : ComponentActivity() {
+    private val viewModel: DishViewModel by viewModels {
+        viewModelFactory {
+            initializer {
+                val dao = AppDatabase.getInstance(applicationContext).dishDao()
+                DishViewModel(dao)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val factory = DishViewModelFactory(AppDatabase.getInstance(applicationContext).dishDao())
-        val viewModel = ViewModelProvider(this, factory)[DishViewModel::class.java]
+
         setContent {
             ShakeEatTheme {
                 val navController = rememberNavController()
@@ -55,29 +61,28 @@ class MainActivity : ComponentActivity() {
                             viewModel = viewModel
                         )
                     }
-
                     composable("food_suggestion") {
-                        FoodSuggestionScreenLayout(navController = navController, )
+                        val selectedDish = navController.previousBackStackEntry
+                            ?.savedStateHandle
+                            ?.get<Dish>("selectedDish")
 
+                        FoodSuggestionScreenLayout(
+                            navController = navController,
+                            selectedDish = selectedDish
+                        )
+                    }
+                    composable("recipe") {
+                        val selectedDish = navController.previousBackStackEntry
+                            ?.savedStateHandle
+                            ?.get<Dish>("selectedDish")
+
+                        RecipeScreenLayout(
+                            navController = navController,
+                            selectedDish = selectedDish
+                        )
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ShakeEatTheme {
-        Greeting("Android")
     }
 }

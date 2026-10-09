@@ -10,13 +10,16 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface DishDao {
     @Query("SELECT * FROM dishes")
-    fun getAllDishes():Flow<List<Dish>>
+    fun getAllDishes(): Flow<List<Dish>>
 
     @Query("SELECT * FROM dishes WHERE mood = :mood")
     fun getDishesByMood(mood: String): Flow<List<Dish>>
 
     @Insert
     suspend fun insert(dish: Dish)
+
+    @Insert
+    suspend fun insertAll(dishes: List<Dish>)
 
     @Delete
     suspend fun delete(dish: Dish)
